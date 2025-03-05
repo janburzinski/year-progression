@@ -57,19 +57,6 @@ export function Calendar() {
   return (
     <div className={styles.container}>
       <div className={styles.timerContainer}>
-        <div className={styles.progressContainer}>
-          <div className={styles.progressBar}>
-            <div
-              className={styles.progressFill}
-              style={{ width: `${timeLeft.progress}%` }}
-            />
-          </div>
-          <div className={styles.progressText}>
-            {timeLeft.progress.toFixed(1)}% OF {new Date().getFullYear()}{" "}
-            COMPLETED
-          </div>
-        </div>
-
         <div className={styles.timerGrid}>
           <div className={styles.timerBlock}>
             <div className={styles.timerNumber}>{timeLeft.days}</div>
@@ -95,6 +82,18 @@ export function Calendar() {
           </div>
         </div>
         <div className={styles.timerSubtext}>LEFT THIS YEAR</div>
+      </div>
+      <div className={styles.progressContainer}>
+        <div className={styles.progressBar}>
+          <div
+            className={styles.progressFill}
+            style={{ width: `${timeLeft.progress}%` }}
+          />
+        </div>
+        <div className={styles.progressText}>
+          {timeLeft.progress.toFixed(1)}% OF {new Date().getFullYear()}{" "}
+          COMPLETED
+        </div>
       </div>
 
       <div className={styles.calendar}>

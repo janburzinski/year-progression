@@ -124,7 +124,7 @@
 }
 
 .progressText {
-  font-family: "Pixelify Sans", monospace;
+  font-family: 'Courier New', Courier, monospace;
   font-size: 1rem;
   color: var(--foreground);
   letter-spacing: 0.1em;

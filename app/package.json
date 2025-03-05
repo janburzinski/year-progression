@@ -11,10 +11,14 @@
   "dependencies": {
     "@auth/core": "^0.38.0",
     "@auth/nextjs": "^0.0.0-380f8d56",
+    "@prisma/client": "^6.4.1",
+    "@prisma/extension-accelerate": "^1.2.2",
     "next": "15.2.0",
     "next-auth": "^4.24.11",
+    "prisma": "^6.4.1",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tsx": "^4.19.3"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
