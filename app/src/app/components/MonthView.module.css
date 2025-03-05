@@ -1,0 +1,124 @@
+.container {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.backButton {
+  font-family: "Pixelify Sans", monospace;
+  background: none;
+  border: 1px solid var(--foreground);
+  color: var(--foreground);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.backButton:hover {
+  background: var(--foreground);
+  color: var(--background);
+  transform: translateX(-5px);
+}
+
+.monthTitle {
+  font-size: 2rem;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.calendarGrid {
+  width: 100%;
+  border: 2px solid var(--foreground);
+  padding: 1rem;
+  background: var(--darker-bg);
+}
+
+.weekDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.weekDay {
+  padding: 1rem;
+  font-size: 1rem;
+  color: var(--dim-text);
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day {
+  position: relative;
+  cursor: pointer;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  border: 1px solid var(--dim-text);
+  margin: 2px;
+  transition: all 0.2s ease;
+}
+
+.day:not(.empty):hover {
+  background: var(--darker-bg);
+}
+
+.empty {
+  background-color: var(--darker-bg);
+  border-color: var(--darker-bg);
+}
+
+.today {
+  background-color: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+
+.selected {
+  background: var(--darker-bg) !important;
+  border-color: var(--foreground) !important;
+}
+
+.hasEntry {
+  font-weight: bold;
+}
+
+.entryDot {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  width: 6px;
+  height: 6px;
+  background: var(--foreground);
+  border-radius: 50%;
+}
+
+.content {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+  }
+}
