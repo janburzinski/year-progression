@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     try {
       parsedDate = new Date(body.date);
       if (isNaN(parsedDate.getTime())) errors.date = "invalid date format";
-    } catch (e) {
+    } catch {
       errors.date = "invalid date format";
     }
   }
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         success: true,
         entry,
       });
-    } catch (e) {
+    } catch {
       errors.id = "error fetching entry";
     }
   } else {
