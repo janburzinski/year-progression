@@ -4,6 +4,23 @@ import { useEffect, useState } from "react";
 import styles from "./MonthView.module.css";
 import { JournalEntry } from "./JournalEntry";
 
+interface EntryModel {
+  content: string;
+  userId: Number;
+  date: Date;
+}
+
+interface PostRequestData {
+  content: string;
+  date?: Date | null;
+  userId: Number;
+}
+
+interface PostResponseData {
+  success: Boolean;
+  entry: EntryModel;
+}
+
 interface MonthViewProps {
   month: number;
   year: number;
@@ -14,6 +31,7 @@ export function MonthView({ month, year, onBack }: MonthViewProps) {
   const [calendar, setCalendar] = useState<(number | null)[][]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [entries, setEntries] = useState<Record<string, string>>({});
+  const [loading,setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const firstDay = new Date(year, month, 1);
@@ -51,8 +69,36 @@ export function MonthView({ month, year, onBack }: MonthViewProps) {
     }
   }, [month, year]);
 
-  const saveEntry = (date: Date, text: string) => {
-    const newEntries = {
+  async function saveEntry(date: Date, text: string) {
+    setLoading(true);
+    console.log("date: " + date + " - text: " + text);
+    const data: PostRequestData = {
+      content: text,
+      date: date,
+      userId: 1
+    };
+
+    try {
+      // TODO: update dev url hihi
+      const response = await fetch(`http://localhost:3000/api/entries/`,{
+        method: "POST",
+        headers: {
+          "Content-Type":"application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      // TODO: update error handling
+      if(!response.ok) throw new Error("error while creating new entry");
+
+      // TODO
+      const responseData = await response.json();
+
+    } catch (error) {
+
+    }
+
+   /*const newEntries = {
       ...entries,
       [date.toISOString()]: text,
     };
@@ -60,7 +106,7 @@ export function MonthView({ month, year, onBack }: MonthViewProps) {
     localStorage.setItem(
       `journal-${year}-${month}`,
       JSON.stringify(newEntries)
-    );
+    );*/
   };
 
   const handleDateClick = (day: number | null) => {

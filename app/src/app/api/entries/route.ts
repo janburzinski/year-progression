@@ -8,11 +8,11 @@ export async function POST(req: NextRequest) {
 
   if (
     !body.content ||
-    typeof body.content !== "string" ||
-    body.content.trim() === ""
+    typeof body.content !== "string"
   ) {
     errors.content = "content is required or invalid";
   }
+
 
   let parsedDate: Date | undefined;
   if (body.date) {
@@ -27,15 +27,63 @@ export async function POST(req: NextRequest) {
   if (Object.keys(errors).length > 0)
     return NextResponse.json({ success: false, errors }, { status: 400 });
 
-  const result = await prisma.entry.create({
-    data: {
-      content: body.content,
-      userId: 1, // todo: implement auth
-      ...(parsedDate && { date: parsedDate }),
-    },
-  });
+  // content is empty, so delete entry
+  if (body.content.trim() == "") {
+    const entry = await prisma.entry.findFirst({
+      where: {
+        date: parsedDate,
+      },
+      select: {
+        id: true,
+      }
+    })
 
-  return NextResponse.json({ success: true, entry: result });
+    if (entry) {
+      const r = await prisma.entry.delete({
+        where: {
+          id: entry.id,
+        },
+      });
+      return NextResponse.json({ success: true, deleted: true });
+    } else {
+      return NextResponse.json({ success: false, errors: { id: "entry not found" } }, { status: 404 });
+    }
+  }
+
+
+  // if we have content, we can create or update an entry
+
+  const exists = await prisma.entry.findFirst({
+    where: {
+      date: parsedDate
+    }, select: { id: true }
+  })
+
+
+  if (!exists) {
+    const result = await prisma.entry.create({
+      data: {
+        content: body.content,
+        userId: 1, // todo: implement auth
+        ...(parsedDate && { date: parsedDate }),
+      },
+    });
+    return NextResponse.json({ success: true, entry: result });
+  } else {
+    const result = await prisma.entry.update({
+      where: {
+        id: exists.id
+      },
+      data: {
+        content: body.content,
+        userId: 1, // todo: implement auth
+        ...(parsedDate && { date: parsedDate }),
+      },
+    });
+    return NextResponse.json({ success: true, entry: result });
+
+  }
+
 }
 
 // retrieving entries
