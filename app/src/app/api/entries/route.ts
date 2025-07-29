@@ -88,16 +88,15 @@ export async function POST(req: NextRequest) {
 
 // retrieving entries
 export async function GET(req: NextRequest) {
-  const queryParam = req.nextUrl.searchParams.get("id");
+  const queryParam = req.nextUrl.searchParams.get("date");
   const errors: Record<string, string> = {};
 
   if (queryParam) {
     try {
-      const parsedId = parseInt(queryParam, 10);
+      const parsedDate = new Date(queryParam);
 
-      if (isNaN(parsedId)) {
-        console.log(`invalid id #1 :: qp: ${queryParam} - pI: ${parsedId}`);
-        errors.id = "id is invalid";
+      if (isNaN(parsedDate.getTime())) {
+        errors.id = "date is invalid";
         return NextResponse.json({
           success: false,
           errors,
@@ -107,18 +106,17 @@ export async function GET(req: NextRequest) {
       //todo: impl. auth hihi
       const entry = await prisma.entry.findFirst({
         where: {
-          id: parsedId,
+          date: parsedDate,
         },
       });
 
       if (!entry) {
-        errors.entry = "error while getting entry";
+        errors.entry = "entry not found";
         return NextResponse.json(
           {
-            success: false,
+            success: true,
             errors,
-          },
-          { status: 404 }
+          }
         );
       }
 

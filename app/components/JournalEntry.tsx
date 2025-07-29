@@ -17,10 +17,27 @@ export function JournalEntry({
   onClose,
 }: JournalEntryProps) {
   const [text, setText] = useState(entry);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setText(entry);
-  }, [entry]);
+    async function fetchData() {
+      try {
+        const response = await fetch(`http://localhost:3000/api/entries`, {method:"GET"})
+        if(response.ok) {
+          const data = await response.json();
+          setText(data.entry.content || "");
+        }  
+      } catch {
+        console.error("error while fetching the entry " + date)
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, [date]);
+
+  if(loading) return <div>Loading...</div>
 
   return (
     <div className={styles.container}>
